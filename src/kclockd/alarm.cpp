@@ -384,7 +384,8 @@ void Alarm::calculateNextRingTime()
     QTime alarmTime = QTime(m_hours, m_minutes, 0).addSecs(m_snoozedLength);
     QDateTime date = QDateTime::currentDateTime();
 
-    if (this->m_daysOfWeek == 0) { // alarm does not repeat (no days of the week are specified)
+    if (this->m_daysOfWeek == 0
+        || this->m_snoozedLength > 0) { // alarm does not repeat (no days of the week are specified) or is snoozed (might not happen on the same day)
         // either the alarm occurs today or tomorrow
         bool alarmOccursToday = alarmTime >= date.time();
         setNextRingTime(QDateTime(date.date().addDays(alarmOccursToday ? 0 : 1), alarmTime).toSecsSinceEpoch());
